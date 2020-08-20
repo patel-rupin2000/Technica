@@ -1,10 +1,6 @@
 import React , { useCallback, useEffect,useState } from "react";
-import * as firebase from 'firebase/app';
 import {connect} from 'react-redux';
-import {Provider} from 'react-redux';
-
-//import {firebaseConfig} from './config';
-import { StyleSheet, Text, View,ImageBackground } from "react-native";
+import { StyleSheet, Text, View,ImageBackground,ScrollView} from "react-native";
 import {
   Container,
   Body,
@@ -14,56 +10,7 @@ import {
   Button,
   Icon,
 } from "native-base";
-
-import { setnewsData, watchnewsData } from './../../App';
-
- /*var firebaseConfig = {
-  apiKey: "AIzaSyB01uuo_GDLQcr1YDb01AyQPmMHto1FbwE",
-  authDomain: "technica-f80c3.firebaseapp.com",
-  databaseURL: "https://technica-f80c3.firebaseio.com/",
-  storageBucket: "bucket.appspot.com"
-};*/
-/*var firebaseConfig = {
-  apiKey: "AIzaSyB01uuo_GDLQcr1YDb01AyQPmMHto1FbwE",
-  authDomain: "technica-f80c3.firebaseapp.com",
-  databaseURL: "https://technica-f80c3.firebaseio.com",
-  projectId: "technica-f80c3",
-  storageBucket: "technica-f80c3.appspot.com",
-  messagingSenderId: "724606726589",
-  appId: "1:724606726589:web:b8a9d138a0f5520e85e2d4",
-  measurementId: "G-7ZDWKS3ZSB"
-  };
-  firebase.initailizeApp(firebaseConfig);
-var database = firebase.database();
-class AboutUs extends React.Component {
-  componentDidMount(){
-    const mynews=firebase.database().ref("news");
-    mynews.on("value",datasnap=>{
-      console.log(datasnap.val());
-    })
-  }*/
-  /*const AboutUs = (props) =>{
-    const [id, setId] = useState()
-
-    const loadData = useCallback(async() =>{
-        const response = await fetch("https://technica-f80c3.firebaseio.com/news.json")
-        if (!response.ok){
-          console.log("ffff");
-          const resData=await response.json()
-          const msg=resData.error;
-          throw new Error(msg)
-        }
-        const resData = await response.json()
-        setId(Object.values(resData)[0].id)
-        console.log(Object.values(resData)[0].id);
-        console.log("kkkk");
-    }) 
-
-
-
-    useEffect(() =>{
-        loadData()
-    },[loadData])*/
+import { setnewsData, watchnewsData } from './../../redux/app-redux';
     
     const mapStateToProps=(state)=>{
       return{
@@ -76,6 +23,7 @@ class AboutUs extends React.Component {
       return{ watchnewsData:()=>{dispatch(watchnewsData())}};
     }
     class Spotlight extends React.Component{
+      
       constructor(props){
         super(props);
         this.state={
@@ -83,13 +31,14 @@ class AboutUs extends React.Component {
         }
         this.props.watchnewsData();
         console.log(this.props.newsData.one);
-        console.ignoredYellowBox = ['Setting a timer'];
+        
         
       }
       
       
       
     render(){
+      console.ignoredYellowBox = ['Setting a timer'];
 
   return (
     
@@ -105,11 +54,20 @@ class AboutUs extends React.Component {
         </Body>
       </Header>
       <ImageBackground source={require("./bg.jpg")} style={styles.image}>
-      <Body style={{ alignSelf: "center", paddingTop: "40%" }}>
+      <Body style={{ alignSelf: "center", paddingTop: "10%"}}>
       
-        
-        <Text style={{fontSize:20}}>{this.props.newsData.one}</Text>
-      
+        <ScrollView>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.one}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.two}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.three}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.four}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.five}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.six}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.seven}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.eight}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.nine}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.ten}</Text>
+        </ScrollView>
       </Body>
       </ImageBackground>
     </Container>

@@ -5,23 +5,15 @@ import {
 } from "@react-navigation/drawer";
 import React from "react";
 import {Provider} from 'react-redux';
-
 import ApiKeys from './constants';
-
-import {createStore,applyMiddleware} from 'redux';
-import thunkMiddleware from 'redux-thunk';
-
 import { View, Image, Alert, Button, StyleSheet, Text ,ImageBackground,TouchableHighlight} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-
-
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Timeline1 from "./src/screens/Timeline";
 import Home from "./src/screens/Home";
 import Spotlight from "./src/screens/Spotlight";
 import AboutUs from "./src/screens/AboutUs";
-//import * as firebase from 'firebase/app';
 var firebase = require("firebase");
 import {
   useTheme,
@@ -34,31 +26,7 @@ import {
   Switch,
 } from "react-native-paper";
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
-
-const initialState={
-  newsData:{ },
-
-};
-const reducer =(state=initialState,action)=>{
-  return state;
-
-};
-const Store=createStore(reducer,applyMiddleware(thunkMiddleware));
-const setnewsData = (newsData) => {
-  return {
-      type: "setnewsData",
-      value: newsData
-  };
-}
-const watchnewsData = () => {
-  return function(dispatch) {
-      firebase.database().ref("news").on("value", function(snapshot) {
-          var newsData = snapshot.val();
-          dispatch(setnewsData(newsData));
-      }, function(error) { });
-  };
-}
-export { setnewsData, watchnewsData };
+import { setnewsData, watchnewsData,Store } from './redux/app-redux';
 
 
 
