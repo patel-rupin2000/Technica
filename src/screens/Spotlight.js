@@ -54,19 +54,19 @@ import { setnewsData, watchnewsData } from './../../redux/app-redux';
         </Body>
       </Header>
       <ImageBackground source={require("./bg.jpg")} style={styles.image}>
-      <Body style={{ alignSelf: "center", paddingTop: "10%"}}>
+      <Body style={{ alignSelf: "center", paddingTop: "10%",marginHorizontal:5}}>
       
-        <ScrollView>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.one}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.two}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.three}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.four}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.five}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.six}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.seven}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.eight}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.nine}</Text>
-        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20}}>{this.props.newsData.ten}</Text>
+        <ScrollView showsVerticalScrollIndicator={false} >
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.one}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.two}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.three}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.four}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.five}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.six}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.seven}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.eight}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.nine}</Text>
+        <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.ten}</Text>
         </ScrollView>
       </Body>
       </ImageBackground>

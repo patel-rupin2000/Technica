@@ -27,15 +27,48 @@ import {
 } from "react-native-paper";
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import { setnewsData, watchnewsData,Store } from './redux/app-redux';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-
-
-
-const Tabs = AnimatedTabBarNavigator();
-//const Tab = createBottomTabNavigator();
+//const Tabs = AnimatedTabBarNavigator();
+const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
-    <Tabs.Navigator         tabBarOptions={{
+    <Tab.Navigator tabBarOptions={{
+      activeTintColor: '#27a5ef',
+      inactiveTintColor: '#FFFFFF',
+      activeBackgroundColor: '#1e1e1e',
+      inactiveBackgroundColor:'#1e1e1e',
+      initialRouteName: "Home",
+    }}
+    >
+    <Tab.Screen name="Home" component={Home}
+    options={{
+      tabBarLabel: "Home",
+      unmountOnBlur: true,
+      
+    
+      
+      tabBarIcon: ({ color, size }) => (
+        <Ionicons name="ios-home"  size={26} color={color} />
+      ),
+      
+    }} />
+    <Tab.Screen name="Timeline" component={Timeline1} 
+           options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                name="timeline-help"
+                
+                size={26}
+                color={color}
+              />
+            ),
+          }}
+        />
+  </Tab.Navigator>
+
+    /*<Tabs.Navigator         tabBarOptions={{
       activeTintColor: '#27a5ef',
       inactiveTintColor: '#FFFFFF',
       activeBackgroundColor: '#1e1e1e',
@@ -80,7 +113,7 @@ function MyTabs() {
           ),
         }}
       />
-    </Tabs.Navigator>
+    </Tabs.Navigator>*/
   );
 }
 
