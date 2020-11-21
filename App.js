@@ -3,7 +3,11 @@ import {
   DrawerItem,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
-import React from "react";
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
+import React ,{ useState, useEffect, useRef } from "react";
 import {Provider} from 'react-redux';
 import ApiKeys from './constants';
 import { View, Image, Alert, Button, StyleSheet, Text ,ImageBackground,TouchableHighlight} from "react-native";
@@ -28,6 +32,10 @@ import {
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import { setnewsData, watchnewsData,Store } from './redux/app-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import {connect} from 'react-redux';
+
+
+
 
 //const Tabs = AnimatedTabBarNavigator();
 const Tab = createBottomTabNavigator();
@@ -121,6 +129,7 @@ function MyTabs() {
 const Drawers = createDrawerNavigator();
 
 function DrawerContent(props, { navigation }) {
+
   return (
     <ImageBackground  source={require("./src/screens/bg.jpg")} style={styles.image}>
     <DrawerContentScrollView {...props}>
@@ -172,7 +181,7 @@ function DrawerContent(props, { navigation }) {
             <DrawerItem
             label="Logout"
             labelStyle={{color:"white",fontWeight:"bold",fontSize:18}}
-            onPress={() => Alert.alert("The app is Logout")}
+            onPress={()=>sendPushNotification()}
           />
         </Drawer.Section>
       </View>
@@ -184,10 +193,150 @@ function DrawerContent(props, { navigation }) {
     </ImageBackground>
   );
 }
-export default function RootNavigator() {
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
+export default function RootNavigator()
+{
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
+  console.log(expoPushToken);
+  
+  console.log(notification && notification.request.content.title);
+  console.log(notification && notification.request.content.body);
+  console.log(notification && JSON.stringify(notification.request.content.data));
+  
   if (!firebase.apps.length){
     firebase.initializeApp(ApiKeys.FirebaseConfig);
+    
   }
+const myitems=firebase.database().ref("trigger/send");
+var count=0;
+  
+  myitems.on("value",datasnap=>{
+    console.log(datasnap.val())
+    if(datasnap.val()==1 && count==0){
+      count=count+1;
+      sendPushNotification();
+      
+      firebase.database().ref('trigger').set({
+        send:0
+      }
+      )
+
+    }
+    
+  })
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+  }
+  sendPushNotification = () => {
+    const mydata=firebase.database().ref("notification");
+    mydata.on("value",datasnap=>{
+      console.log(datasnap.val());
+      var notify=datasnap.val();
+      console.log(notify);
+      let response = fetch('https://exp.host/--/api/v2/push/send',
+
+
+    
+      {
+        
+        
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          
+          {
+          to: expoPushToken,
+          sound: 'default',
+          title: 'Technica',
+          body: notify,
+        },
+        ),
+   
+      });
+      const myitems=firebase.database().ref("trigger/send");
+      myitems.on("value",datasnap=>{
+        console.log(datasnap.val())
+        
+        
+          firebase.database().ref('trigger').set({
+            send:0
+          }
+          )
+    
+        
+        
+      })
+      
+
+  
+    
+      
+    })
+
+ 
+
+  };
+ 
   return (
     <Provider store={Store}>
     
@@ -202,6 +351,7 @@ export default function RootNavigator() {
     </Provider>
     
   );
+  
 }
 const styles = StyleSheet.create({
   image: {
@@ -216,3 +366,4 @@ const styles = StyleSheet.create({
   },
 
 });
+
