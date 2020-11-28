@@ -10,6 +10,8 @@ import {
   Button,
   Icon,
 } from "native-base";
+var firebase = require("firebase");
+import firebaseConfig from './config';
 import { setnewsData, watchnewsData } from './../../redux/app-redux';
     
     const mapStateToProps=(state)=>{
@@ -38,7 +40,12 @@ import { setnewsData, watchnewsData } from './../../redux/app-redux';
       
       
     render(){
+      if (!firebase.apps.length){
+        firebase.initializeApp(firebaseConfig.FirebaseConfig);
+        
+      }
       console.ignoredYellowBox = ['Setting a timer'];
+
 
   return (
     
@@ -57,8 +64,12 @@ import { setnewsData, watchnewsData } from './../../redux/app-redux';
       <Body style={{ alignSelf: "center", paddingTop: "10%",marginHorizontal:5}}>
       
         <ScrollView showsVerticalScrollIndicator={false} >
+  
+
         <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.one}</Text>
+        
         <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.two}</Text>
+        
         <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.three}</Text>
         <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.four}</Text>
         <Text style={{fontSize:20,fontWeight:"bold",color:"white",marginVertical:20,justifyContent:"center"}}>{this.props.newsData.five}</Text>
